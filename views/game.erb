@@ -1,0 +1,67 @@
+<!-- Display Dealer Hand - first card is hidden and will be revealed once player stays -->
+<h5>Dealer's Cards:</h5>
+<% session[:dealer_hand].each_with_index do |card, index| %>
+  <% if !session[:stay] && index == 0 %>
+    <img src="/images/cards/cover.jpg" alt="Dealer's Hidden Card"/>
+  <% else %>
+    <img src="/images/cards/<%= display_image(card) %>.jpg" alt="Card Image"/>
+  <% end %>
+<% end %>
+
+<!-- Dealer Total - reveal once player stays -->
+<% if session[:stay] %>
+  <p>Dealer Total: <%= evaluate_total(session[:dealer_hand]) %></p> 
+<% end %>
+
+<!-- Dealer's Turn - executes once player stays and dealer hand < 17 -->
+<% if session[:stay] && dealer_hit?(session[:dealer_hand]) %>
+  <p>The dealer will hit. Click button to reveal the card.</p>
+  <form action='/game/dealer_hit' method='post'>
+    <input type='submit' value='Dealer Hit'/>
+  </form>
+<% end %>
+
+<!-- Display Player Hand -->
+<h5><%= session[:username] %>'s Cards:</h5>
+<% session[:player_hand].each do |card| %>
+  <img src='/images/cards/<%= display_image(card) %>.jpg' alt='Card Image'/>
+<% end %>
+<p>Player Total: <%= evaluate_total(session[:player_hand]) %></p>
+
+<!-- Display Result -->
+<% if busted?(session[:player_hand]) %>
+  <p><%= decide_winner(session[:player_hand], session[:dealer_hand]) %> </p>
+<% elsif busted?(session[:dealer_hand]) %>
+  <p><%= decide_winner(session[:player_hand], session[:dealer_hand]) %> </p>
+<% elsif session[:stay] && !dealer_hit?(session[:dealer_hand]) %>
+  <p><%= decide_winner(session[:player_hand], session[:dealer_hand]) %> </p>
+<% elsif session[:stay] %>
+  <p><%= session[:stay_message] %></p>  
+<% end %>
+
+<!-- Play Again?? -->
+<% if @play_again_btn %>
+  <form action='/play_again' method='post'>
+    <input type='submit' value='Play Again'/>
+  </form>
+<% end %>
+
+<!-- Hit or Stay Buttons - will be hidden once player's turn ends -->
+<!-- Enter dealer's turn once 'stay' button is pressed -->
+<% unless busted?(session[:player_hand]) || session[:stay] || hit21?(session[:player_hand]) %>
+  <form action='/game/player_hit' method='post'>
+    <input type='submit' value='hit'/>
+  </form>
+  <form action='/game/player_stay' method='post'>
+    <input type='submit' value='stay'/>
+  </form>
+<% end %>
+
+<!-- This button allows us to enter dealer's turn when player hits 21 (when 'stay' button is hidden) -->
+<% if @dealer_turn_btn %>
+  <form action='/game/player_stay' method='post'>
+    <p><%= "#{session[:username]} Hits 21!!!" %></p> 
+    <input type='submit' value="Dealer's Turn">
+  </form>
+<% end %>
+
