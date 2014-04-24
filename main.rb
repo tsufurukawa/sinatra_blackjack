@@ -68,6 +68,10 @@ helpers do
   def hit21?(card)
     evaluate_total(card) == 21
   end
+
+  def show_result?(player, dealer)
+    busted?(player) || busted?(dealer) || (session[:stay] && !dealer_hit?(dealer))
+  end
 end
 
 get '/' do 
