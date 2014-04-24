@@ -1,0 +1,106 @@
+.outer-container {
+  height: 660px;
+}
+
+.container {
+  float: left;
+}
+
+.outer-container h2 {
+  position: relative;
+  float: left;
+  background: gray;
+  height: 100%;
+  width: 300px;
+}
+
+.outer-container h2 span {
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  width: 150px;
+  display: inline-block;
+  position: absolute; 
+}
+
+.card-container {
+  text-align: center;
+  border: 3px solid black;
+  padding: 1em 0;
+}
+
+img {
+  margin: 0 0.5em;
+  border: 3px solid black;
+  border-radius: 10px;
+  width: 100px;
+  height: auto;
+}
+
+.hit-stay {
+  display: inline-block;
+}
+
+.game-rules {
+  color: red;
+  font-size: 1.5em;
+  text-align: center;
+}
+
+.btn-container {
+  text-align: center;
+  margin-top: 1em;
+}
+
+.btn-primary {
+  font-size: 20px;
+  line-height: 30px;
+  background: url('/images/purty_wood.png') brown;
+  color: black;
+  margin: 0 10px;
+  margin-bottom: -15px;
+}
+
+input[type="submit"] {
+  width: 120px;
+}
+
+.stay-message {
+  font-size: 1.5em;
+}
+
+.result p {
+  font-size: 1.5em;
+}
+
+.span4:last-child {
+  text-align: right;
+}
+
+.span4:nth-child(2) {
+  text-align: center;
+}
+
+.row-fluid {
+  background: black;
+  padding: 8px 8px 0 8px;
+  margin-bottom: 20px;
+  margin-top: 15px;
+  line-height:10px;
+  -webkit-box-sizing: border-box; 
+  -moz-box-sizing: border-box;    
+  box-sizing: border-box;
+}
+
+.footer-text {
+  font-weight: bold;
+  font-size: 1.3em;
+  color: white;
+}
+
+.footer-num {
+  font-size: 1.15em;
+  color: yellow;
+}

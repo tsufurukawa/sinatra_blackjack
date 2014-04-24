@@ -1,8 +1,8 @@
 <h4>Please enter a bet amount: </h4>
 <p>You currently have <%= session[:money] %> dollars</p>
 
-<form action='/bet' method='post'>
+<form action='/bet' method='post' class='form-inline'>
   <input type='text' name='bet_amount'/>
-  <input type='submit'/>
+  <input type='submit' class='btn'/>
 </form>
 

@@ -17,11 +17,14 @@
       </div>
     </div>
 
-  <div class="container">
-    <%if @error %>
-      <div class="alert alert-error"><%=@error%></div>
-    <% end %>
-      <%= yield %>
+  <div class='outer-container clearfix'>
+    <h2 class='active'><span>Blackjack Pays 3 to 2</span></h2>
+    <div class="container">
+      <%if @error %>
+        <div class="alert alert-error"><%=@error%></div>
+      <% end %>
+        <%= yield %>
+    </div>
   </div>
   </body>
 </html>
