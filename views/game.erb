@@ -1,89 +1,101 @@
-<!-- Display Result -->
-<% if show_result?(session[:player_hand], session[:dealer_hand]) %>
-  <div class='result alert'>
-    <% if busted?(session[:player_hand]) %>
-      <p><%= decide_winner(session[:player_hand], session[:dealer_hand]) %> </p>
-    <% elsif busted?(session[:dealer_hand]) %>
-      <p><%= decide_winner(session[:player_hand], session[:dealer_hand]) %> </p>
-    <% elsif session[:stay] && !dealer_hit?(session[:dealer_hand]) %>
-      <p><%= decide_winner(session[:player_hand], session[:dealer_hand]) %> </p>
-    <% end %>
+<div class='outer-container clearfix'>
+  <div class='aside'>
+    <h2>BLACKJACK PAYS 3 TO 2</br><span>Dealer must stand on all 17s</span></h2>
   </div>
-<% end %>
 
-<!-- Play Again?? -->
-<% if @play_again_btn %>
-  <form action='/play_again' method='post'>
-    <input type='submit' value='Play Again' class='btn btn-primary'/>
-  </form>
-<% end %>
+  <div class="inner-container">
+    <!-- Display Result -->
+    <% if show_result?(session[:player_hand], session[:dealer_hand]) %>
+      <div class='result alert'>
+        <% if busted?(session[:player_hand]) %>
+          <p><%= decide_winner(session[:player_hand], session[:dealer_hand]) %> </p>
+        <% elsif busted?(session[:dealer_hand]) %>
+          <p><%= decide_winner(session[:player_hand], session[:dealer_hand]) %> </p>
+        <% elsif session[:stay] && !dealer_hit?(session[:dealer_hand]) %>
+          <p><%= decide_winner(session[:player_hand], session[:dealer_hand]) %> </p>
+        <% end %>
+      </div>
+    <% end %>
 
-<!-- Display Dealer Hand - first card is hidden and will be revealed once player stays -->
-<div class='dealer-container'>
-  <% if session[:stay] %>
-    <h4>Dealer Total: <%= evaluate_total(session[:dealer_hand]) %></h4> 
-  <% else %>
-    <h4>Dealer Total: ?</h4>
-  <% end %>
- 
-  <div class='card-container'>
-    <% session[:dealer_hand].each_with_index do |card, index| %>
-      <% if !session[:stay] && index == 0 %>
-        <img src="/images/cards/cover.jpg" alt="Dealer's Hidden Card"/>
+    <!-- Play Again?? -->
+    <% if @play_again_btn %>
+      <form action='/play_again' method='post' class='play-again-btn'>
+        <input type='submit' value='Play Again' class='btn btn-primary'/>
+      </form>
+    <% end %>
+
+    <!-- Display Dealer Hand - first card is hidden and will be revealed once player stays -->
+    <div class='hand'>
+      <% if session[:stay] %>
+        <h3>Dealer Total: <%= evaluate_total(session[:dealer_hand]) %></h3> 
       <% else %>
-        <img src="/images/cards/<%= display_image(card) %>.jpg" alt="Card Image"/>
+        <h3>Dealer Total: ?</h3>
       <% end %>
+     
+      <div class='card-container'>
+        <% session[:dealer_hand].each_with_index do |card, index| %>
+          <% if !session[:stay] && index == 0 %>
+            <img src="/images/cards/cover.jpg" alt="Dealer's Hidden Card"/>
+          <% else %>
+            <img src="/images/cards/<%= display_image(card) %>.jpg" alt="Card Image"/>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Dealer's Turn - executes once player stays and dealer hand < 17 -->
+    <% if session[:stay] && dealer_hit?(session[:dealer_hand]) %>
+      <!-- <p>The dealer will hit. Click button to reveal the card.</p> -->
+      <form action='/game/dealer_hit' method='post'>
+        <input type='submit' value="Click To Reveal Dealer's Next Card" class='btn btn-primary'/>
+      </form>
     <% end %>
+
+    <!-- This button allows us to enter dealer's turn when player hits 21 (when 'stay' button is hidden) -->
+    <% if @dealer_turn_btn %>
+      <form action='/game/player_stay' method='post'>
+        <input type='submit' value="Dealer's Turn" class='btn btn-primary'/>
+      </form>
+    <% end %>
+
+    <!-- Display Player Hand -->
+    <div class='hand'>
+      <h3><%= session[:username] %> Total: <%= evaluate_total(session[:player_hand]) %></h3>
+      <div class='card-container'>
+        <% session[:player_hand].each do |card| %>
+          <img src='/images/cards/<%= display_image(card) %>.jpg' alt='Card Image'/>
+        <% end %>
+      </div>  
+    </div>
+
+
+    <!-- Hit or Stay Buttons - will be hidden once player's turn ends -->
+    <!-- Enter dealer's turn once 'stay' button is pressed -->
+    <div class='btn-container'>
+      <% if !busted?(session[:player_hand]) && !session[:stay] && !hit21?(session[:player_hand]) %>
+        <form action='/game/player_hit' method='post' class='hit-stay'>
+          <input type='submit' value='HIT' class='btn' id='hit-btn'/>
+        </form>
+        <form action='/game/player_stay' method='post' class='hit-stay'>
+          <input type='submit' value='STAY' class='btn' id='stay-btn'/>
+        </form>
+      <% elsif session[:stay] %>
+        <p class='stay-message'><%= session[:stay_message] %></p> 
+      <% end %>
+    </div>
+
+
+
+
+    <!-- footer -->
+    <div class='row-fluid'>
+      <div class='span4'><p class='footer-text'>BET</p><p class='footer-num'><%= session[:bet_amount] %></p></div>
+      <div class='span4'><p class='footer-text'>BANKROLL</p><p class='footer-num'><%= session[:money] %></p></div>
+      <div class='span4'><p class='footer-text'>WIN</p><p class='footer-num'><%= session[:win_amount] %></p></div>
+    </div>
   </div>
 </div>
 
-<!-- Dealer's Turn - executes once player stays and dealer hand < 17 -->
-<% if session[:stay] && dealer_hit?(session[:dealer_hand]) %>
-  <!-- <p>The dealer will hit. Click button to reveal the card.</p> -->
-  <form action='/game/dealer_hit' method='post'>
-    <input type='submit' value="Click To Reveal Dealer's Next Card" class='btn btn-warning'/>
-  </form>
-<% end %>
-
-<!-- This button allows us to enter dealer's turn when player hits 21 (when 'stay' button is hidden) -->
-<% if @dealer_turn_btn %>
-  <form action='/game/player_stay' method='post'>
-    <input type='submit' value="Dealer's Turn" class='btn btn-warning'/>
-  </form>
-<% end %>
-
-<!-- Display Player Hand -->
-<div class='player-container'>
-  <h4><%= session[:username] %> Total: <%= evaluate_total(session[:player_hand]) %></h4>
-  <div class='card-container'>
-    <% session[:player_hand].each do |card| %>
-      <img src='/images/cards/<%= display_image(card) %>.jpg' alt='Card Image'/>
-    <% end %>
-  </div>  
-</div>
-
-
-<!-- Hit or Stay Buttons - will be hidden once player's turn ends -->
-<!-- Enter dealer's turn once 'stay' button is pressed -->
-<div class='btn-container'>
-  <% if !busted?(session[:player_hand]) && !session[:stay] && !hit21?(session[:player_hand]) %>
-    <form action='/game/player_hit' method='post' class='hit-stay'>
-      <input type='submit' value='Hit' class='btn' id='hit-btn'/>
-    </form>
-    <form action='/game/player_stay' method='post' class='hit-stay'>
-      <input type='submit' value='Stay' class='btn' id='stay-btn'/>
-    </form>
-  <% elsif session[:stay] %>
-    <p class='stay-message'><%= session[:stay_message] %></p> 
-  <% end %>
-</div>
 
 
 
-
-<!-- footer -->
-<div class='row-fluid'>
-  <div class='span4'><p class='footer-text'>BET</p><p class='footer-num'><%= session[:bet_amount] %></p></div>
-  <div class='span4'><p class='footer-text'>BANKROLL</p><p class='footer-num'><%= session[:money] %></p></div>
-  <div class='span4'><p class='footer-text'>WIN</p><p class='footer-num'>WIN AMOUNT</p></div>
-</div>

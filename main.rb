@@ -42,19 +42,30 @@ helpers do
     @play_again_btn = true
 
     if evaluate_total(player_cards) > 21
-      session[:money] -= session[:bet_amount]          
-      "BUST!! #{session[:username]} Loses..."
+      session[:win_amount] = -session[:bet_amount]
+      session[:money] += session[:win_amount]          
+      "BUST!! #{session[:username].upcase} LOSES $#{session[:bet_amount]}..."
     elsif evaluate_total(dealer_cards) > 21
-      session[:money] += session[:bet_amount]
-      "Dealer Busts!! #{session[:username]} Wins!!!"
+      session[:win_amount] = session[:bet_amount]
+      session[:money] += session[:win_amount]
+      "BUST!! #{session[:username].upcase} WINS $#{session[:bet_amount]}!!!"
     elsif evaluate_total(player_cards) > evaluate_total(dealer_cards)
-      session[:money] += session[:bet_amount]
-      "Congratulations!!! #{session[:username]} Wins!!!"
+      if hit21?(player_cards) && player_cards.count == 2
+        session[:win_amount] = 1.5 * session[:bet_amount]
+        session[:money] += session[:win_amount]
+        "BLACKJACK!!! #{session[:username].upcase} WINS $#{session[:win_amount]}!!!"
+      else 
+        session[:win_amount] = session[:bet_amount]
+        session[:money] += session[:win_amount]
+        "CONGRATULATIONS!!! #{session[:username].upcase} WINS $#{session[:bet_amount]}!!!"
+      end
     elsif evaluate_total(player_cards) < evaluate_total(dealer_cards)
-      session[:money] -= session[:bet_amount]
-      "I'm Sorry, #{session[:username]} Loses..."
+      session[:win_amount] = -session[:bet_amount]
+      session[:money] += session[:win_amount]
+      "BUMMER, #{session[:username].upcase} LOSES $#{session[:bet_amount]}..."
     else
-      "Draw."
+      session[:win_amount] = 0
+      "PUSH. #{session[:username].upcase} WINS $0"
     end  
   end
 
@@ -79,9 +90,14 @@ get '/' do
 end
 
 post '/' do
-  session[:username] = params[:username]
-  session[:money] = 500
-  redirect '/bet'
+  if params[:username].lstrip.rstrip.empty?
+    @error = "Please enter a valid name"
+    erb :set_name
+  else
+    session[:username] = params[:username]
+    session[:money] = 500
+    redirect '/bet'
+  end
 end
 
 get '/bet' do 
@@ -95,7 +111,7 @@ post '/bet' do
     erb :bet
   # betting more than what's available will display an error message 
   elsif params[:bet_amount].to_i > session[:money]
-    @error = "You can only bet #{session[:money]}"
+    @error = "You cannot bet more than $#{session[:money]}"
     erb :bet
   else
     session[:bet_amount] = params[:bet_amount].to_i
@@ -107,6 +123,7 @@ get '/game' do
   # initialize deck
   values = %w(2 3 4 5 6 7 8 9 10 Jack Queen King Ace)
   suits = %w(Spades Clubs Diamonds Hearts)
+  session[:win_amount] = 0
   session[:stay] = false
   session[:deck] = values.product(suits)
   session[:deck].shuffle!

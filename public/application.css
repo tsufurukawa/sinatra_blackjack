@@ -1,9 +1,6 @@
-/* courtesy of Thoriq Firdaus http://www.hongkiat.com/blog/css-equal-height/ */
 
-.outer-container {
-  display: table;
-  margin: 0 auto;
 
+body {
   background: rgb(180,221,180); /* Old browsers */
   background: -moz-linear-gradient(-45deg,  rgba(180,221,180,1) 0%, rgba(131,199,131,1) 2%, rgba(82,177,82,1) 17%, rgba(8,127,0,1) 37%, rgba(8,127,0,1) 37%, rgba(8,127,0,1) 50%, rgba(0,87,0,1) 75%, rgba(0,87,0,1) 100%, rgba(0,36,0,1) 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,rgba(180,221,180,1)), color-stop(2%,rgba(131,199,131,1)), color-stop(17%,rgba(82,177,82,1)), color-stop(37%,rgba(8,127,0,1)), color-stop(37%,rgba(8,127,0,1)), color-stop(50%,rgba(8,127,0,1)), color-stop(75%,rgba(0,87,0,1)), color-stop(100%,rgba(0,87,0,1)), color-stop(100%,rgba(0,36,0,1))); /* Chrome,Safari4+ */
@@ -13,11 +10,37 @@
   background: linear-gradient(135deg,  rgba(180,221,180,1) 0%,rgba(131,199,131,1) 2%,rgba(82,177,82,1) 17%,rgba(8,127,0,1) 37%,rgba(8,127,0,1) 37%,rgba(8,127,0,1) 50%,rgba(0,87,0,1) 75%,rgba(0,87,0,1) 100%,rgba(0,36,0,1) 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4ddb4', endColorstr='#002400',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 
+  background-attachment: fixed;
+}
+
+html {
+  min-height: 100%;
+}
+
+.navbar-inner {
+  min-height: 40px;
+}
+
+.nav {
+  padding-left: 30px;
+}
+
+.nav li {
+  line-height: 20px;
+}
+
+
+
+/* courtesy of Thoriq Firdaus http://www.hongkiat.com/blog/css-equal-height/ */
+
+.outer-container {
+  display: table;
+  margin: 0 auto;
+  padding: 0;
 }
 
 .aside, .inner-container {
   float: none;
-  padding: 20px;
   vertical-align: top;
 }
 
@@ -28,40 +51,63 @@
   -o-transform: rotate(-90deg);
   transform: rotate(-90deg);
   position: absolute;
-  top: 200px;
-  left: -270px;
+  top: 250px;
+  left: -260px;
   width: 660px;
   color: red;  
   text-align: center;
 }
 
+.aside span {
+  color: #D1D119;
+  font-size: 0.7em;
+}
+
 .inner-container {
   width: 90%;
   display: table-cell;
-
-
-
+  padding: 0 50px;
 }
 
 .aside {
   width: 10%;
   display: table-cell;
-
+  background: black;
 }
 
 .card-container {
   text-align: center;
-  border: 3px solid black;
-  padding: 1em 0;
+  border: 2px solid white;
+  border-radius: 12px;
+  padding: 10px 0;
+  margin-bottom: 5px;
+  background: #004500;
+}
+
+.play-again-btn {
   margin-bottom: 10px;
 }
 
-img {
+.hand h3 {
+  color: #CFCFCF;
+  font-weight: bold;
+}
+
+.card-container img {
   margin: 0 0.5em;
-  border: 3px solid black;
+  border: 2px solid black;
   border-radius: 10px;
   width: 100px;
   height: auto;
+}
+
+.container img {
+  width: 300px; 
+  height: auto;
+}
+
+.container {
+  padding-top: 50px;
 }
 
 .hit-stay {
@@ -76,25 +122,39 @@ img {
 
 .btn-container {
   text-align: center;
-  margin-top: 1em;
+  margin-top: 30px;
 }
 
 #hit-btn, #stay-btn {
   font-size: 20px;
+  font-weight: bold;
   line-height: 30px;
-  background: url('/images/purty_wood.png') brown;
-  color: black;
+  background: url('/images/brown041.jpg') brown;
+  -webkit-box-shadow: 2px 5px 5px black;
+  -moz-box-shadow: 2px 5px 5px black;
+  box-shadow: 2px 5px 5px black;
+  color: white;
   width: 125px;
   margin: 0 10px;
   margin-bottom: -15px;
+  border-radius: 12px;
 }
 
 .stay-message {
   font-size: 1.5em;
+  color: #CFCFCF;
+}
+
+.result {
+  margin-top: 10px;
+  padding-top: 10px;
+  margin-bottom: 10px;
+  line-height: 20px;
+  height: 20px;
 }
 
 .result p {
-  font-size: 1.75em;
+  font-size: 1.5em;
   font-weight: bold;
 }
 
@@ -109,9 +169,8 @@ img {
 .row-fluid {
   background: black;
   padding: 8px 8px 0 8px;
-  margin-bottom: 20px;
-  margin-top: 15px;
-  line-height:10px;
+  margin-top: 30px;
+  line-height:15px;
   -webkit-box-sizing: border-box; 
   -moz-box-sizing: border-box;    
   box-sizing: border-box;
@@ -119,11 +178,37 @@ img {
 
 .footer-text {
   font-weight: bold;
-  font-size: 1.3em;
+  font-size: 1.5em;
   color: white;
 }
 
 .footer-num {
-  font-size: 1.15em;
+  font-size: 1.3em;
   color: yellow;
+}
+
+
+.container form, 
+.container h1, 
+.container h3, 
+.container p {
+  margin: auto;
+  text-align: center;
+  color: white;
+  text-shadow: 2px 2px black;
+}
+
+.container form {
+  width: 400px;
+  margin: 20px auto;
+}
+
+input[name="username"], input[name="bet_amount"] {
+  height: 40px;
+  padding: 0 20px;
+}
+
+.alert-error {
+  margin: 10px 20px;
+  padding-left: 20px;
 }

@@ -1,8 +1,13 @@
-<h4>Please enter a bet amount: </h4>
-<p>You currently have <%= session[:money] %> dollars</p>
+<div class='container'>
+  <h1>WELCOME TO BLACKJACK!!!</h1>
+  <h3>Please place your bet: </h3>
+  <p>You currently have <%= session[:money] %> dollars</p>
 
-<form action='/bet' method='post' class='form-inline'>
-  <input type='text' name='bet_amount'/>
-  <input type='submit' class='btn'/>
-</form>
+  <form action='/bet' method='post'>
+    <input type='text' name='bet_amount' class='btn-block'/>
+    <input type='submit' class='btn btn-primary btn-large btn-block'/>
+  </form>
+
+  <img src='/images/blackjack.png' alt='Blackjack Chips'/>
+</div>
 

@@ -5,29 +5,22 @@
     <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/application.css">
   </head>
-  <body style="padding-top: 50px;">
+  <body style="padding-top: 40px;">
 
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
-        <div class="container">
             <ul class="nav">
-              <li><a href="/">Nav Item</a></li>
+              <li><a href="/">NEW GAME</a></li>
             </ul>
-        </div>
       </div>
     </div>
 
-    <div class='outer-container clearfix'>
-      <div class='aside'>
-        <h2>Blackjack Pays 3 to 2</br>Dealer Hits All 17s</h2>
-      </div>
-   
-      <div class="inner-container">
-        <%if @error %>
-          <div class="alert alert-error"><%=@error%></div>
-        <% end %>
-          <%= yield %>
-      </div>
-    </div>
+    <%if @error %>
+      <div class="alert alert-error"><%=@error%></div>
+    <% end %>
+      <%= yield %>
+
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="/application.js"></script>
   </body>
 </html>
