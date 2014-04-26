@@ -1,4 +1,6 @@
+<!-- 'outer-container' houses the sidebar('aside') and main content ('inner-container') -->
 <div class='outer-container clearfix'>
+
   <div class='aside'>
     <h2>BLACKJACK PAYS 3 TO 2</br><span>Dealer must stand on all 17s</span></h2>
   </div>
@@ -45,7 +47,7 @@
 
     <!-- Dealer's Turn - executes once player stays and dealer hand < 17 -->
     <% if session[:stay] && dealer_hit?(session[:dealer_hand]) %>
-      <!-- <p>The dealer will hit. Click button to reveal the card.</p> -->
+      <p>The dealer will hit. Click button to reveal the card.</p>
       <form action='/game/dealer_hit' method='post'>
         <input type='submit' value="Click To Reveal Dealer's Next Card" class='btn btn-primary'/>
       </form>
@@ -68,7 +70,6 @@
       </div>  
     </div>
 
-
     <!-- Hit or Stay Buttons - will be hidden once player's turn ends -->
     <!-- Enter dealer's turn once 'stay' button is pressed -->
     <div class='btn-container'>
@@ -84,16 +85,14 @@
       <% end %>
     </div>
 
-
-
-
-    <!-- footer -->
+    <!-- Footer - displays bankroll, bet amount, and winnings for the round -->
     <div class='row-fluid'>
       <div class='span4'><p class='footer-text'>BET</p><p class='footer-num'><%= session[:bet_amount] %></p></div>
       <div class='span4'><p class='footer-text'>BANKROLL</p><p class='footer-num'><%= session[:money] %></p></div>
       <div class='span4'><p class='footer-text'>WIN</p><p class='footer-num'><%= session[:win_amount] %></p></div>
     </div>
   </div>
+  
 </div>
 
 

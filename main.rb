@@ -33,7 +33,7 @@ helpers do
     evaluate_total(cards) > BLACKJACK
   end
 
-  # dealer stays on soft 17
+  # dealer stays on all 17
   def dealer_hit?(cards)
     evaluate_total(cards) < DEALER_HIT_MIN
   end
@@ -109,7 +109,7 @@ post '/bet' do
   if params[:bet_amount].to_i.to_s != params[:bet_amount]
     @error = "Please enter a valid bet"
     erb :bet
-  # betting more than what's available will display an error message 
+  # betting more than player's bankroll will display an error message 
   elsif params[:bet_amount].to_i > session[:money]
     @error = "You cannot bet more than $#{session[:money]}"
     erb :bet

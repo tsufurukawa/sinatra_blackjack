@@ -1,5 +1,6 @@
+/*****General Layout*****/
 
-
+/*Background genereated with Gradient Generator*/
 body {
   background: rgb(180,221,180); /* Old browsers */
   background: -moz-linear-gradient(-45deg,  rgba(180,221,180,1) 0%, rgba(131,199,131,1) 2%, rgba(82,177,82,1) 17%, rgba(8,127,0,1) 37%, rgba(8,127,0,1) 37%, rgba(8,127,0,1) 50%, rgba(0,87,0,1) 75%, rgba(0,87,0,1) 100%, rgba(0,36,0,1) 100%); /* FF3.6+ */
@@ -17,6 +18,7 @@ html {
   min-height: 100%;
 }
 
+/*****Navbar*****/
 .navbar-inner {
   min-height: 40px;
 }
@@ -29,19 +31,28 @@ html {
   line-height: 20px;
 }
 
-
-
+/* Generating equal column heights */
 /* courtesy of Thoriq Firdaus http://www.hongkiat.com/blog/css-equal-height/ */
-
 .outer-container {
   display: table;
   margin: 0 auto;
   padding: 0;
+  min-width: 100% !important;
+  width: 100%;
 }
 
+/*****Sidebar Formatting*****/
 .aside, .inner-container {
   float: none;
   vertical-align: top;
+}
+
+.aside {
+  width: 10%;
+  display: table-cell;
+  background: black;
+  min-width: 100px;
+  border-radius: 8px;
 }
 
 .aside h2 {
@@ -51,11 +62,13 @@ html {
   -o-transform: rotate(-90deg);
   transform: rotate(-90deg);
   position: absolute;
-  top: 250px;
-  left: -260px;
+  top: 300px;
+  left: -270px;
   width: 660px;
   color: red;  
   text-align: center;
+  font-size: 2.5vw;
+  line-height: 35px;
 }
 
 .aside span {
@@ -63,16 +76,11 @@ html {
   font-size: 0.7em;
 }
 
+/*****Main Content Formatting*****/
 .inner-container {
   width: 90%;
   display: table-cell;
   padding: 0 50px;
-}
-
-.aside {
-  width: 10%;
-  display: table-cell;
-  background: black;
 }
 
 .card-container {
@@ -101,23 +109,8 @@ html {
   height: auto;
 }
 
-.container img {
-  width: 300px; 
-  height: auto;
-}
-
-.container {
-  padding-top: 50px;
-}
-
 .hit-stay {
   display: inline-block;
-}
-
-.game-rules {
-  color: red;
-  font-size: 1.5em;
-  text-align: center;
 }
 
 .btn-container {
@@ -158,6 +151,12 @@ html {
   font-weight: bold;
 }
 
+.inner-container > p {
+  font-size: 1.3em;
+  color: #CFCFCF;
+}
+
+/*****Footer Formatting*****/
 .span4:last-child {
   text-align: right;
 }
@@ -174,6 +173,7 @@ html {
   -webkit-box-sizing: border-box; 
   -moz-box-sizing: border-box;    
   box-sizing: border-box;
+  border-radius: 8px;
 }
 
 .footer-text {
@@ -187,6 +187,16 @@ html {
   color: yellow;
 }
 
+
+/*****For bet/game_over/set_name.erb*****/
+.container {
+  padding-top: 50px;
+}
+
+.container img {
+  width: 300px; 
+  height: auto;
+}
 
 .container form, 
 .container h1, 
@@ -208,7 +218,19 @@ input[name="username"], input[name="bet_amount"] {
   padding: 0 20px;
 }
 
+input[type="text"] {
+    font-size: 22px;
+}
+
 .alert-error {
   margin: 10px 20px;
   padding-left: 20px;
+}
+
+
+/******Media Query*******/
+@media screen and (max-width: 960px) {
+  .aside h2 {
+    font-size: 26px;
+  }  
 }
