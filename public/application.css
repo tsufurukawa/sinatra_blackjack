@@ -29,6 +29,8 @@ html {
 
 .nav li {
   line-height: 20px;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 /* Generating equal column heights */
@@ -220,6 +222,7 @@ input[name="username"], input[name="bet_amount"] {
 
 input[type="text"] {
     font-size: 22px;
+    text-align: center;
 }
 
 .alert-error {
