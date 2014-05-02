@@ -1,30 +1,29 @@
 <!-- 'outer-container' houses the sidebar('aside') and main content ('inner-container') -->
-<div class="outer-container clearfix">
+<div class="clearfix" id="outer-container">
 
-  <div class="aside">
+  <div id="aside">
     <h2>BLACKJACK PAYS 3 TO 2<br/><span>Dealer must stand on all 17s</span></h2>
   </div>
 
-  <div class="inner-container">
+  <div id="inner-container">
+    
     <!-- Display Result -->
-    <% if show_result?(session[:player_hand], session[:dealer_hand]) %>
-      <div class="result alert">
-        <% if busted?(session[:player_hand]) %>
-          <p><%= decide_winner(session[:player_hand], session[:dealer_hand]) %> </p>
-        <% elsif busted?(session[:dealer_hand]) %>
-          <p><%= decide_winner(session[:player_hand], session[:dealer_hand]) %> </p>
-        <% elsif session[:stay] && !dealer_hit?(session[:dealer_hand]) %>
-          <p><%= decide_winner(session[:player_hand], session[:dealer_hand]) %> </p>
-        <% end %>
-      </div>
-    <% end %>
+    <div id='show-result'>
+      <% if @result_msg %>
+        <div class='result'>
+          <p><%= @result_msg %></p>
+        </div>
+      <% end %>
+    </div> 
 
     <!-- Play Again?? -->
-    <% if @play_again_btn %>
-      <form action="/play_again" method="post" class="play-again-btn">
-        <input type="submit" value="Play Again" class="btn btn-primary"/>
-      </form>
-    <% end %>
+    <div id="play-again">
+      <% if @play_again_btn %>
+        <form action="/play_again" method="post" class="play-again-btn">
+          <input type="submit" value="Play Again" class="btn btn-primary"/>
+        </form>
+      <% end %>
+   </div>
 
     <!-- Display Dealer Hand - first card is hidden and will be revealed once player stays -->
     <div class="hand">
@@ -45,20 +44,23 @@
       </div>
     </div>
 
-    <!-- Dealer's Turn - executes once player stays and dealer hand < 17 -->
-    <% if session[:stay] && dealer_hit?(session[:dealer_hand]) %>
-      <p>The dealer will hit. Click button to reveal the card.</p>
-      <form action="/game/dealer_hit" method="post">
-        <input type="submit" value="Click To Reveal Dealer's Next Card" class="btn btn-primary"/>
-      </form>
-    <% end %>
+    
+    <div id="display-dealer-turn-btn">
+      <!-- Dealer's Turn - executes once player stays and dealer hand < 17 -->
+      <% if session[:stay] && dealer_hit?(session[:dealer_hand]) %>
+          <p>The dealer will hit. Click button to reveal the card.</p>
+          <form action="/game/dealer_hit" method="post">
+            <input type="submit" value="Click To Reveal Dealer's Next Card" class="btn btn-primary" id="dealer-next-card"/>
+          </form>
+      <% end %>
 
     <!-- This button allows us to enter dealer's turn when player hits 21 (when 'stay' button is hidden) -->
-    <% if @dealer_turn_btn %>
-      <form action="/game/player_stay" method="post">
-        <input type="submit" value="Dealer's Turn" class="btn btn-primary"/>
-      </form>
-    <% end %>
+      <% if @dealer_turn_btn %>
+        <form action="/game/player_stay" method="post">
+          <input type="submit" value="Dealer's Turn" class="btn btn-primary" id="dealer-turn-btn"/>
+        </form>
+      <% end %>      
+    </div>
 
     <!-- Display Player Hand -->
     <div class="hand">
@@ -91,9 +93,12 @@
       <div class="span4"><p class="footer-text">BANKROLL</p><p class="footer-num"><%= session[:money] %></p></div>
       <div class="span4"><p class="footer-text">WIN</p><p class="footer-num"><%= session[:win_amount] %></p></div>
     </div>
+
+
   </div>
-  
 </div>
+
+
 
 
 

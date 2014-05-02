@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'pry'
+require 'json'
 
 set :sessions, true
 BLACKJACK = 21
@@ -42,35 +43,38 @@ helpers do
     @play_again_btn = true
     @show_hit_or_stay_buttons = false
 
+    dealer_total = evaluate_total(dealer_cards)
+    player_total = evaluate_total(player_cards)
+
     if busted?(player_cards)
       session[:win_amount] = -session[:bet_amount]
       session[:money] += session[:win_amount]          
-      "BUST!! #{session[:username].upcase} LOSES $#{session[:bet_amount]}..."
+      @result_msg = "BUST!! #{session[:username].upcase} LOSES $#{session[:bet_amount]}..."
     elsif hit21?(player_cards) && player_cards.count == 2 && busted?(dealer_cards)
       session[:win_amount] = 1.5 * session[:bet_amount]
       session[:money] += session[:win_amount]
-      "BLACKJACK!!! #{session[:username].upcase} WINS $#{session[:win_amount]}!!!"
+      @result_msg = "BLACKJACK!!! #{session[:username].upcase} WINS $#{session[:win_amount]}!!!"
     elsif busted?(dealer_cards)
       session[:win_amount] = session[:bet_amount]
       session[:money] += session[:win_amount]
-      "DEALER BUSTS!! #{session[:username].upcase} WINS $#{session[:bet_amount]}!!!"
-    elsif evaluate_total(player_cards) > evaluate_total(dealer_cards)
+      @result_msg = "DEALER BUSTS!! #{session[:username].upcase} WINS $#{session[:bet_amount]}!!!"
+    elsif player_total > dealer_total
       if hit21?(player_cards) && player_cards.count == 2
         session[:win_amount] = 1.5 * session[:bet_amount]
         session[:money] += session[:win_amount]
-        "BLACKJACK!!! #{session[:username].upcase} WINS $#{session[:win_amount]}!!!"
+        @result_msg = "BLACKJACK!!! #{session[:username].upcase} WINS $#{session[:win_amount]}!!!"
       else 
         session[:win_amount] = session[:bet_amount]
         session[:money] += session[:win_amount]
-        "CONGRATULATIONS!!! #{session[:username].upcase} WINS $#{session[:bet_amount]}!!!"
+        @result_msg = "CONGRATULATIONS!!! #{session[:username].upcase} WINS $#{session[:bet_amount]}!!!"
       end
-    elsif evaluate_total(player_cards) < evaluate_total(dealer_cards)
+    elsif player_total < dealer_total
       session[:win_amount] = -session[:bet_amount]
       session[:money] += session[:win_amount]
-      "BUMMER, #{session[:username].upcase} LOSES $#{session[:bet_amount]}..."
+      @result_msg = "BUMMER, #{session[:username].upcase} LOSES $#{session[:bet_amount]}..."
     else
       session[:win_amount] = 0
-      "PUSH. #{session[:username].upcase} WINS $0"
+      @result_msg = "PUSH. #{session[:username].upcase} WINS $0"
     end  
   end
 
@@ -114,8 +118,8 @@ get '/bet' do
 end
 
 post '/bet' do 
-  # non-numeric values and decimals will display an error message
-  if params[:bet_amount].to_i.to_s != params[:bet_amount]
+  # non-numeric values, decimals, and negative values will display an error message
+  if params[:bet_amount].to_i.to_s != params[:bet_amount] || params[:bet_amount].to_i < 0
     @error = "Please enter a valid bet"
     erb :bet
   # betting more than player's bankroll will display an error message 
@@ -157,9 +161,11 @@ post '/game/player_hit' do
   if hit21?(session[:player_hand])
     @dealer_turn_btn = true
     @show_hit_or_stay_buttons = false
+  elsif busted?(session[:player_hand])
+    decide_winner(session[:player_hand], session[:dealer_hand])
   end
 
-  erb :game
+  erb :game, layout: false
 end
 
 post '/game/player_stay' do 
@@ -170,7 +176,12 @@ end
 
 get '/game/dealer' do 
   @show_hit_or_stay_buttons = false
-  erb :game
+
+  if show_result?(session[:player_hand], session[:dealer_hand])
+    decide_winner(session[:player_hand], session[:dealer_hand])
+  end
+
+  erb :game, layout: false
 end
 
 post '/game/dealer_hit' do 
