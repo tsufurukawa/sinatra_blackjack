@@ -119,7 +119,7 @@ end
 
 post '/bet' do 
   # non-numeric values, decimals, and negative values will display an error message
-  if params[:bet_amount].to_i.to_s != params[:bet_amount] || params[:bet_amount].to_i < 0
+  if params[:bet_amount].to_i.to_s != params[:bet_amount] || params[:bet_amount].to_i <= 0
     @error = "Please enter a valid bet"
     erb :bet
   # betting more than player's bankroll will display an error message 

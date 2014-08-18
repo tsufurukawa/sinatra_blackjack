@@ -1,12 +1,10 @@
 <!-- 'outer-container' houses the sidebar('aside') and main content ('inner-container') -->
 <div class="clearfix" id="outer-container">
-
   <div id="aside">
     <h2>BLACKJACK PAYS 3 TO 2<br/><span>Dealer must stand on all 17s</span></h2>
   </div>
 
   <div id="inner-container">
-    
     <!-- Display Result -->
     <div id='show-result'>
       <% if @result_msg %>
@@ -44,7 +42,6 @@
       </div>
     </div>
 
-    
     <div id="display-dealer-turn-btn">
       <!-- Dealer's Turn - executes once player stays and dealer hand < 17 -->
       <% if session[:stay] && dealer_hit?(session[:dealer_hand]) %>
@@ -94,12 +91,7 @@
       <div class="span4"><p class="footer-text">WIN</p><p class="footer-num"><%= session[:win_amount] %></p></div>
     </div>
 
-
   </div>
 </div>
-
-
-
-
 
 

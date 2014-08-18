@@ -243,34 +243,10 @@ input[type="text"] {
 
 /******Media Query*******/
 @media screen and (max-width: 960px) {
-  .aside h2 {
-    font-size: 26px;
+  #aside h2 {
+    font-size: 2.0em;
   }  
 }
-
-
-
-
-/*.card-container img {
-  position: relative;
-}
-*/
-
-.card-container {
-  -webkit-perspective: 500px;
-  perspective-origin: 100px;
-}
-
-.card-container img {
-  transition: -webkit-transform 0.5s ease-in;
-  -webkit-transform-style: preserve-3d;
-}
-
-.card-container img:hover {
-  -webkit-transform: rotateY(-1turn);
-}
-
-
 
 
 
