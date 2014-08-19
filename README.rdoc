@@ -1,0 +1,5 @@
+== Sinatra Blackjack Game
+
+This is a blackjack game built on the Sinatra framework. The deployed application can be seen here:
+
+http://tl-blackjack-furukawa.herokuapp.com
